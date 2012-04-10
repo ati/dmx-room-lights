@@ -110,14 +110,6 @@ int main(int argc, char **argv)
 
     memset(&dmx[0], 0, sizeof(dmx));
 
-//    dmx[0] = 1;
-//    dmx[1] = 1;
-//    dmx[2] = 1;
-    
-//    while(1)
-//    {
-//        
-//    }
     dmx[1] = 1;
     dmx[4] = 1;
     dmx[8] = 1;

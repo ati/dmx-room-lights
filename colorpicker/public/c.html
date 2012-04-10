@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>DMX colorPicker</title>
+        <script type="text/javascript" src="/js/colorPicker.js"></script>
+        <script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript">
+            var current_color = '';
+            var request_completed = true;
+            
+            colorPicker.mode = 'H';
+            colorPicker.size = 4;
+            colorPicker.allowClose = false;
+            colorPicker.expColor = true;
+            colorPicker.expHex = false;
+            colorPicker.rSpeed = 45;
+
+            colorPicker.exportColor = function()
+            {
+                if ((current_color != colorPicker.CP.hex) && request_completed)
+                {
+                    current_color = colorPicker.CP.hex;
+                    request_completed = false;
+                    $.get('/c/' + current_color).complete(function(){request_completed = true;});
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <p><input type="text" onClick="colorPicker(event)" value="click to show colorpicker" size="58"/></p>
+    </body>
+</html>
