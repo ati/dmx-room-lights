@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  galaxy: 
+  color_hue: 
+  color_saturation: 
+  color_value: 
+  distance: 1.5
+
+two:
+  galaxy: 
+  color_hue: 
+  color_saturation: 
+  color_value: 
+  distance: 1.5

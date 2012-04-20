@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  color_group: 
+  distance: 1.5
+  s: 1
+
+two:
+  color_group: 
+  distance: 1.5
+  s: 1
