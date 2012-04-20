@@ -1,0 +1,2 @@
+module ColorGroupsHelper
+end

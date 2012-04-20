@@ -1,4 +1,8 @@
 Light::Application.routes.draw do
+  resources :galaxies
+
+  resources :color_groups
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
