@@ -1,4 +1,6 @@
 Light::Application.routes.draw do
+  resources :fixtures
+
   resources :galaxies
 
   resources :color_groups

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120420201857) do
+ActiveRecord::Schema.define(:version => 20120421154512) do
 
   create_table "color_groups", :force => true do |t|
     t.text     "displayname"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(:version => 20120420201857) do
     t.float    "distance"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "start_address"
   end
 
   add_index "fixtures", ["color_hue_id"], :name => "index_fixtures_on_color_hue_id"

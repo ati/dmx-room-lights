@@ -1,0 +1,33 @@
+<h1>Listing fixtures</h1>
+
+<table>
+  <tr>
+    <th>Galaxy</th>
+    <th>Color hue</th>
+    <th>Color saturation</th>
+    <th>Color value</th>
+    <th>Distance</th>
+    <th>Start address</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @fixtures.each do |fixture| %>
+  <tr>
+    <td><%= fixture.galaxy.displayname %></td>
+    <td><%= fixture.color_hue %></td>
+    <td><%= fixture.color_saturation %></td>
+    <td><%= fixture.color_value %></td>
+    <td><%= fixture.distance %></td>
+    <td><%= fixture.start_address %></td>
+    <td><%= link_to 'Show', fixture %></td>
+    <td><%= link_to 'Edit', edit_fixture_path(fixture) %></td>
+    <td><%= link_to 'Destroy', fixture, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Fixture', new_fixture_path %>

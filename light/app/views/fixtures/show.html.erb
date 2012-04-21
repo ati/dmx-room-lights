@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Galaxy:</b>
+  <%= @fixture.galaxy.displayname %>
+</p>
+
+<p>
+  <b>Color hue:</b>
+  <%= @fixture.color_hue %>
+</p>
+
+<p>
+  <b>Color saturation:</b>
+  <%= @fixture.color_saturation %>
+</p>
+
+<p>
+  <b>Color value:</b>
+  <%= @fixture.color_value %>
+</p>
+
+<p>
+  <b>Distance:</b>
+  <%= @fixture.distance %>
+</p>
+
+<p>
+  <b>Start address:</b>
+  <%= @fixture.start_address %>
+</p>
+
+
+<%= link_to 'Edit', edit_fixture_path(@fixture) %> |
+<%= link_to 'Back', fixtures_path %>
