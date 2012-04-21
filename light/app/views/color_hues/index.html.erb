@@ -1,0 +1,27 @@
+<h1>Listing color_hues</h1>
+
+<table>
+  <tr>
+    <th>Color group</th>
+    <th>Distance</th>
+    <th>Hue</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @color_hues.each do |color_hue| %>
+  <tr>
+    <td><%= color_hue.color_group.displayname %></td>
+    <td><%= color_hue.distance %></td>
+    <td><%= color_hue.h %></td>
+    <td><%= link_to 'Show', color_hue %></td>
+    <td><%= link_to 'Edit', edit_color_hue_path(color_hue) %></td>
+    <td><%= link_to 'Destroy', color_hue, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Color hue', new_color_hue_path %>

@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Color group:</b>
+  <%= @color_hue.color_group.displayname %>
+</p>
+
+<p>
+  <b>Distance:</b>
+  <%= @color_hue.distance %>
+</p>
+
+<p>
+  <b>H:</b>
+  <%= @color_hue.h %>
+</p>
+
+
+<%= link_to 'Edit', edit_color_hue_path(@color_hue) %> |
+<%= link_to 'Back', color_hues_path %>

@@ -1,0 +1,29 @@
+<%= form_for(@color_hue) do |f| %>
+  <% if @color_hue.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@color_hue.errors.count, "error") %> prohibited this color_hue from being saved:</h2>
+
+      <ul>
+      <% @color_hue.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :color_group %>: 
+    <%= f.collection_select :color_group_id, ColorGroup.all, :id, :displayname %><br />
+  </div>
+  <div class="field">
+    <%= f.label :distance %> <small>(0..1)</small>:
+    <%= f.text_field :distance, :size => 8 %><br />
+  </div>
+  <div class="field">
+    <%= f.label 'Hue' %> <small>(0..360)</small>:
+    <%= f.number_field :h, :size => 8 %><br />
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

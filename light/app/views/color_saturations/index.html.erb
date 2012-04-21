@@ -1,0 +1,27 @@
+<h1>Listing color_saturations</h1>
+
+<table>
+  <tr>
+    <th>Color group</th>
+    <th>Distance</th>
+    <th>Saturation</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @color_saturations.each do |color_saturation| %>
+  <tr>
+    <td><%= color_saturation.color_group.displayname %></td>
+    <td><%= color_saturation.distance %></td>
+    <td><%= color_saturation.s %></td>
+    <td><%= link_to 'Show', color_saturation %></td>
+    <td><%= link_to 'Edit', edit_color_saturation_path(color_saturation) %></td>
+    <td><%= link_to 'Destroy', color_saturation, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Color saturation', new_color_saturation_path %>

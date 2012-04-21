@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Color group:</b>
+  <%= @color_value.color_group.displayname %>
+</p>
+
+<p>
+  <b>Distance:</b>
+  <%= @color_value.distance %>
+</p>
+
+<p>
+  <b>V:</b>
+  <%= @color_value.v %>
+</p>
+
+
+<%= link_to 'Edit', edit_color_value_path(@color_value) %> |
+<%= link_to 'Back', color_values_path %>

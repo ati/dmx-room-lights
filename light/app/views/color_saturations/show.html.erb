@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Color group:</b>
+  <%= @color_saturation.color_group.displayname %>
+</p>
+
+<p>
+  <b>Distance:</b>
+  <%= @color_saturation.distance %>
+</p>
+
+<p>
+  <b>S:</b>
+  <%= @color_saturation.s %>
+</p>
+
+
+<%= link_to 'Edit', edit_color_saturation_path(@color_saturation) %> |
+<%= link_to 'Back', color_saturations_path %>

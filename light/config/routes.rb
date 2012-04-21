@@ -1,4 +1,10 @@
 Light::Application.routes.draw do
+  resources :color_values
+
+  resources :color_saturations
+
+  resources :color_hues
+
   resources :fixtures
 
   resources :galaxies
