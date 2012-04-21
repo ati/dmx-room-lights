@@ -1,8 +1,9 @@
-<h1>Listing color_groups</h1>
+<h1>Listing color groups</h1>
 
 <table>
   <tr>
     <th>Displayname</th>
+    <th>Group type</th>
     <th></th>
     <th></th>
     <th></th>
@@ -11,6 +12,7 @@
 <% @color_groups.each do |color_group| %>
   <tr>
     <td><%= color_group.displayname %></td>
+    <td><%= color_group.group_type %></td>
     <td><%= link_to 'Show', color_group %></td>
     <td><%= link_to 'Edit', edit_color_group_path(color_group) %></td>
     <td><%= link_to 'Destroy', color_group, confirm: 'Are you sure?', method: :delete %></td>

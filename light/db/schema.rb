@@ -11,12 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120421154512) do
+ActiveRecord::Schema.define(:version => 20120421202005) do
 
   create_table "color_groups", :force => true do |t|
     t.text     "displayname"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "group_type"
   end
 
   create_table "color_hues", :force => true do |t|
@@ -48,6 +49,16 @@ ActiveRecord::Schema.define(:version => 20120421154512) do
   end
 
   add_index "color_values", ["color_group_id"], :name => "index_color_values_on_color_group_id"
+
+  create_table "displays", :force => true do |t|
+    t.integer  "galaxy_id"
+    t.integer  "color_group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "displays", ["color_group_id"], :name => "index_displays_on_color_group_id"
+  add_index "displays", ["galaxy_id"], :name => "index_displays_on_galaxy_id"
 
   create_table "fixtures", :force => true do |t|
     t.integer  "galaxy_id"

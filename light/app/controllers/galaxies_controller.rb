@@ -14,8 +14,17 @@ class GalaxiesController < ApplicationController
   # GET /galaxies/1.json
   def show
     @galaxy = Galaxy.find(params[:id])
+    missing_color_groups = { 'hue' => true, 'saturation' => true, 'value' => true}
+    @galaxy.color_groups.each do |cg|
+      missing_color_groups[cg.group_type] = false
+    end
+
+    missing_color_groups.each do |k,v|
+      @galaxy.color_groups.new(:displayname => '*empty*', :group_type => k) if v
+    end
 
     respond_to do |format|
+      #format.text { render :text => @galaxy.color_groups.inspect }
       format.html # show.html.erb
       format.json { render json: @galaxy }
     end
@@ -79,5 +88,12 @@ class GalaxiesController < ApplicationController
       format.html { redirect_to galaxies_url }
       format.json { head :ok }
     end
+  end
+
+
+  # show actual state of the galaxy
+  def display 
+    @galaxy = Galaxy.find(params[:id])
+    render :text => params.inspect
   end
 end

@@ -5,6 +5,11 @@
   <%= @color_group.displayname %>
 </p>
 
+<p>
+  <b>Group type:</b>
+  <%= @color_group.group_type %>
+</p>
+
 
 <%= link_to 'Edit', edit_color_group_path(@color_group) %> |
 <%= link_to 'Back', color_groups_path %>

@@ -11,6 +11,8 @@ Light::Application.routes.draw do
 
   resources :color_groups
 
+  match '/galaxies/:id/display' => 'galaxies#display', :as => :display_galaxy
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
