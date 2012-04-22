@@ -94,6 +94,13 @@ class GalaxiesController < ApplicationController
   # show actual state of the galaxy
   def display 
     @galaxy = Galaxy.find(params[:id])
-    render :text => params.inspect
+    @galaxy.transaction do
+      @galaxy.displays.delete_all
+      [:color_group_hue, :color_group_saturation, :color_group_value].each do |g|
+        @galaxy.color_groups << ColorGroup.find(params[g].to_i)
+      end
+    end
+    redirect_to @galaxy, notice: 'Galaxy displayed'
+    #render :text => params.inspect
   end
 end

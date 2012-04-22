@@ -7,7 +7,8 @@
 <%= form_for @galaxy, :url => {:action => "display"} do |f| %>
   <% @galaxy.color_groups.each do |c_g| %>
     <%= c_g.group_type.capitalize %>
-    <%= select_tag("color_group_#{c_g.group_type}", options_for_select(ColorGroup.where(:group_type => c_g.group_type).map {|cg| [cg.displayname, cg.id] }))%>
+    <% mcg = @galaxy.get_color_group(c_g.group_type) %>
+    <%= select_tag("color_group_#{c_g.group_type}", options_for_select(ColorGroup.where(:group_type => c_g.group_type).map {|cg| [cg.displayname, cg.id] }, mcg.id ))%>
   <% end %>
   <%= f.submit %>
 <% end %>
