@@ -9,7 +9,7 @@ class ColorGroup < ActiveRecord::Base
   def val_at_distance(distance)
     pts = self.points
     if pts.count == 0
-      return nil
+      return 0
     elsif pts.count == 1
       return pts.values.first
     else
