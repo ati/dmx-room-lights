@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= f.label :color_group %>: 
-    <%= f.collection_select :color_group_id, ColorGroup.all, :id, :displayname %><br />
+    <%= f.collection_select :color_group_id, ColorGroup.where(:group_type => :hue), :id, :displayname %><br />
   </div>
   <div class="field">
     <%= f.label :distance %> <small>(0..1)</small>:
@@ -21,7 +21,8 @@
   </div>
   <div class="field">
     <%= f.label 'Hue' %> <small>(0..360)</small>:
-    <%= f.number_field :h, :size => 8 %><br />
+    <%= f.number_field :h, :size => 8, :class => "color {pickerMode:'HSV',pickerClosable:true,required:false,adjust:false}", :onchange => '$(this).val(Math.floor(60*this.color.hsv[0]));' %>
+    <br />
   </div>
   <div class="actions">
     <%= f.submit %>
