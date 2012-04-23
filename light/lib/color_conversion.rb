@@ -8,7 +8,7 @@ class ColorConversion
 
     i = (h*6).floor
     f = h*6 - i
-    p = v(1-s)
+    p = v*(1-s)
     q = v*(1-f*s)
     t = v*(1-(1-f)*s)
 
