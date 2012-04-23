@@ -3,9 +3,9 @@
 <table>
   <tr>
     <th>Galaxy</th>
-    <th>Color hue</th>
-    <th>Color saturation</th>
-    <th>Color value</th>
+    <th>Red</th>
+    <th>Green</th>
+    <th>Blue</th>
     <th>Distance</th>
     <th>Start address</th>
     <th></th>
@@ -16,9 +16,9 @@
 <% @fixtures.each do |fixture| %>
   <tr>
     <td><%= fixture.galaxy.displayname %></td>
-    <td><%= fixture.color_hue %></td>
-    <td><%= fixture.color_saturation %></td>
-    <td><%= fixture.color_value %></td>
+    <td><%= fixture.r %></td>
+    <td><%= fixture.g %></td>
+    <td><%= fixture.b %></td>
     <td><%= fixture.distance %></td>
     <td><%= fixture.start_address %></td>
     <td><%= link_to 'Show', fixture %></td>

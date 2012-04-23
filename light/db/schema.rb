@@ -62,19 +62,16 @@ ActiveRecord::Schema.define(:version => 20120421202005) do
 
   create_table "fixtures", :force => true do |t|
     t.integer  "galaxy_id"
-    t.integer  "color_hue_id"
-    t.integer  "color_saturation_id"
-    t.integer  "color_value_id"
+    t.integer  "r"
+    t.integer  "g"
+    t.integer  "b"
     t.float    "distance"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "start_address"
   end
 
-  add_index "fixtures", ["color_hue_id"], :name => "index_fixtures_on_color_hue_id"
-  add_index "fixtures", ["color_saturation_id"], :name => "index_fixtures_on_color_saturation_id"
-  add_index "fixtures", ["color_value_id"], :name => "index_fixtures_on_color_value_id"
-  add_index "fixtures", ["galaxy_id"], :name => "index_fixtures_on_galaxy_id"
+  add_index "fixtures", ["start_address"], :name => "index_fixtures_on_start_address", :unique => true
 
   create_table "galaxies", :force => true do |t|
     t.text     "displayname"
