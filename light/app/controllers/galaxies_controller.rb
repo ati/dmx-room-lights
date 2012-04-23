@@ -20,7 +20,7 @@ class GalaxiesController < ApplicationController
     end
 
     missing_color_groups.each do |k,v|
-      @galaxy.color_groups.new(:displayname => '*empty*', :group_type => k) if v
+      (@galaxy.color_groups << ColorGroup.new(:displayname => '*empty*', :group_type => k, :id => 0)) if v
     end
 
     respond_to do |format|
