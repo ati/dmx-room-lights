@@ -1,30 +1,29 @@
 class ColorConversion
-  #http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
+  # http://www.easyrgb.com/index.php?X=MATH&H=21#text21
+  GAMMA = 1/2.2
+
   def self.hsv2rgb(h,s,v)
-    r = g = b = 0
     h = h/360.0
     s = s/100.0
-    v = v/100.0
+    v = (v/100.0)**GAMMA
 
-    i = (h*6).floor
-    f = h*6 - i
-    p = v*(1-s)
-    q = v*(1-f*s)
-    t = v*(1-(1-f)*s)
+    if ( s == 0)
+      return [v,v,v].map {|x| (x*255).to_i}
+    end
 
-    case i%6
-    when 0
-      [v,t,p]
-    when 1
-      [q,v,p]
-    when 2
-      [p,v,t]
-    when 3
-      [p,q,v]
-    when 4
-      [t,p,v]
-    when 5
-      [v,p,q]
+    vh = (h*6 == 6)? 0 : h*6
+    vi = vh.floor
+    v1 = v*(1.0 - s)
+    v2 = v*(1.0 - s*(vh - vi))
+    v3 = v*(1.0 - s*(1.0 - (vh - vi)))
+
+    case vi
+    when 0 then [v,v3,v1]
+    when 1 then [v2,v,v1]
+    when 2 then [v1,v,v3]
+    when 3 then [v1,v2,v]
+    when 4 then [v3,v1,v]
+    else [v,v1,v2]
     end.map {|x| (x*255).to_i }
   end
 end
