@@ -176,15 +176,10 @@ int main(int argc, char **argv)
     {
       len = sizeof(cliaddr);
       n = recvfrom(sockfd, dmx.body, sizeof(dmx.body), 0, (struct sockaddr *)&cliaddr, &len);
-      fprintf(stdout, "Received %d bytes:\n", n);
+      // fprintf(stdout, "Received %d bytes:\n", n);
       universe_set(dmx, sizeof(dmx));
       usleep(4*DMX_CHANNELS);
     }
-
-   // dmx[1] = 1;
-   // dmx[4] = 1;
-   // dmx[8] = 1;
-   // dmx[12] = 1;
 
     dmx_shutdown();
     exit (0);
