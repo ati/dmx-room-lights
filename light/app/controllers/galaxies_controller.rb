@@ -104,4 +104,6 @@ class GalaxiesController < ApplicationController
     redirect_to @galaxy, notice: 'Galaxy displayed'
     #render :text => params.inspect
   end
+
 end
+

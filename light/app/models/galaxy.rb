@@ -3,35 +3,59 @@ class Galaxy < ActiveRecord::Base
   has_many :displays
   has_many :color_groups, :through => :displays
 
+  @dmx_data = []
+
   def get_color_group(group_type)
     self.color_groups.where(:group_type => group_type).first
   end
 
   def self.display
-    dmx_data = []
-    512.times { dmx_data << 0 }
-
+    self.fill_dmx_data
     # recompute rbg values for all fixtures
-    universe = self.includes(:fixtures, :color_groups)
-    universe.each do |glx|
+    hueg = get_color_group('hue').presence || ColorGroup.new(:group_type => :hue)
+    satg = get_color_group('saturation').presence || ColorGroup.new(:group_type => :saturation)
+    valg = get_color_group('value').presence || ColorGroup.new(:group_type => :value)
 
-      hueg = glx.get_color_group('hue').presence || ColorGroup.new(:group_type => :hue)
-      satg = glx.get_color_group('saturation').presence || ColorGroup.new(:group_type => :saturation)
-      valg = glx.get_color_group('value').presence || ColorGroup.new(:group_type => :value)
-
-      glx.fixtures.each do |f|
-         f.r, f.g, f.b = ColorConversion.hsv2rgb(
-           hueg.val_at_distance(f.distance),
-           satg.val_at_distance(f.distance),
-           valg.val_at_distance(f.distance)
-         )
-         f.save
-         dmx_data[f.start_address] = f.r
-         dmx_data[f.start_address+1] = f.g
-         dmx_data[f.start_address+2] = f.b
-      end
+    fixtures.each do |f|
+       f.r, f.g, f.b = ColorConversion.hsv2rgb(
+         hueg.val_at_distance(f.distance),
+         satg.val_at_distance(f.distance),
+         valg.val_at_distance(f.distance)
+       )
+       f.save
+       f.setpixel(@dmx_data)
     end
 
-    DmxUniverse.display(dmx_data)
+    DmxUniverse.display(@dmx_data)
+  end
+
+
+  def fill_dmx_data
+    @dmx_data = []
+    512.times { @dmx_data << 0 }
+    Fixture.all.map {|f| f.setpixel(@dmx_data) }
+  end
+
+
+  def onoff(is_on)
+    self.fill_dmx_data
+    if is_on.to_i < 1
+      self.fixtures.each do |f|
+        f.r = f.g = f.b = 0 # don't save!
+        f.setpixel(@dmx_data)
+      end
+    end
+    DmxUniverse.display(@dmx_data)
+  end
+
+
+  def display_hsv(h,s,v)
+    self.fill_dmx_data
+    self.fixtures.each do |f|
+       f.r, f.g, f.b = ColorConversion.hsv2rgb(h,s,v)
+       f.save
+       f.setpixel(@dmx_data)
+    end
+    DmxUniverse.display(@dmx_data)
   end
 end
