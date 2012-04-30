@@ -131,10 +131,17 @@ static int dmx_shutdown()
 }
 
 
+int64_t timespec_diff(struct timespec *timeA_p, struct timespec *timeB_p)
+{
+  return ((timeA_p->tv_sec * 1000000) + timeA_p->tv_nsec/1000) -
+           ((timeB_p->tv_sec * 1000000) + timeB_p->tv_nsec/1000);
+}
+
 
 
 int main(int argc, char **argv)
 {
+    struct timespec start, end;
 
     // initialize DMX
     if (EXIT_FAILURE == dmx_init(&ftdic))
@@ -147,7 +154,7 @@ int main(int argc, char **argv)
     memset(&dmx, 0, sizeof(dmx));
 
     // initialize UDP server
-    int sockfd, n;
+    int sockfd, n, packet_counter, msec_diff;
     struct sockaddr_in servaddr, cliaddr;
     socklen_t len;
 
@@ -172,13 +179,26 @@ int main(int argc, char **argv)
 
     fprintf(stdout, "initialized DMX hardware and network service. Listening to UDP connections at port %d\n", UDP_PORT);
 
+    packet_counter = 0;
+    clock_gettime(CLOCK_MONOTONIC, &start);
+
     for (;;)
     {
       len = sizeof(cliaddr);
       n = recvfrom(sockfd, dmx.body, sizeof(dmx.body), 0, (struct sockaddr *)&cliaddr, &len);
-      // fprintf(stdout, "Received %d bytes:\n", n);
+      
+      clock_gettime(CLOCK_MONOTONIC, &end);
+      packet_counter++;
+      msec_diff = timespec_diff(&end, &start);
+      if (msec_diff > 1000000)
+      {
+          msec_diff = 0;
+      }
+      start = end;
+
+      // fprintf(stdout, "packet %d, diff = %d\n", packet_counter, msec_diff);
       universe_set(dmx, sizeof(dmx));
-      usleep(4*DMX_CHANNELS);
+      // usleep(4*DMX_CHANNELS);
     }
 
     dmx_shutdown();

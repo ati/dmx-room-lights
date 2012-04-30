@@ -41,6 +41,7 @@ class Galaxy < ActiveRecord::Base
     self.fill_dmx_data
     if is_on.to_i < 1
       self.fixtures.each do |f|
+        f.save
         f.r = f.g = f.b = 0 # don't save!
         f.setpixel(@dmx_data)
       end
@@ -53,7 +54,7 @@ class Galaxy < ActiveRecord::Base
     self.fill_dmx_data
     self.fixtures.each do |f|
        f.r, f.g, f.b = ColorConversion.hsv2rgb(h,s,v)
-       f.save
+       #f.save
        f.setpixel(@dmx_data)
     end
     DmxUniverse.display(@dmx_data)

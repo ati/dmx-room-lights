@@ -1,11 +1,12 @@
 class ColorConversion
   # http://www.easyrgb.com/index.php?X=MATH&H=21#text21
-  GAMMA = 2.2
+  VAMMA = 2.0
+  SAMMA = 1/3.5
 
   def self.hsv2rgb(h,s,v)
     h = h/360.0
-    s = s/100.0
-    v = (v/100.0)**GAMMA
+    s = (s/100.0)**SAMMA
+    v = (v/100.0)**VAMMA
 
     if ( s == 0)
       return [v,v,v].map {|x| (x*255).to_i}
