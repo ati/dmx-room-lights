@@ -2,8 +2,16 @@ class Galaxy < ActiveRecord::Base
   has_many :fixtures
   has_many :displays
   has_many :color_groups, :through => :displays
+  attr_accessor :distance_map
+  after_find :initialize
 
   @dmx_data = []
+
+
+  def initialize
+    self.distance_map = DistanceMap.new(0.5, 0.5, 1.0)
+  end
+
 
   def get_color_group(group_type)
     self.color_groups.where(:group_type => group_type).first
@@ -53,7 +61,7 @@ class Galaxy < ActiveRecord::Base
   def display_hsv(h,s,v)
     self.fill_dmx_data
     self.fixtures.each do |f|
-       f.r, f.g, f.b = ColorConversion.hsv2rgb(h,s,v)
+       f.r, f.g, f.b = ColorConversion.hsv2rgb(h,s, 1.0*self.distance_map.value_at(f.distance)*v)
        #f.save
        f.setpixel(@dmx_data)
     end

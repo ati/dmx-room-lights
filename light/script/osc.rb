@@ -1,35 +1,76 @@
 # compatible with ruby 1.8
 require 'osc-ruby'
-require 'ruby-prof'
 
-RUNFILE = "./tmp/osc_keep_running"
-TIMESTEP = 40.0/1000 # sec
+#RUNFILE = "./tmp/osc_keep_running"
 #File.open(RUNFILE, "w") {}
+TIMESTEP = 40.0/1000 # sec
 
 @server = OSC::Server.new( 10000 )
-@state = {:hue => 180, :saturation => 50, :value => 50}
+@client = OSC::Client.new( '192.168.1.106', 10001)
+prefix = '/galaxies/1/'
+
+@state = {
+  :hue => 180, 
+  :saturation => 50, 
+  :value => 50,
+  :onoff => 1,
+  :distance_map => 'x:y:w'
+}
+
 @galaxy = Galaxy.find(1)
+@minw = 1.0/@galaxy.fixtures.count 
 
-@server.add_method '/galaxies/1/hue' do | message |
-  @state[:hue] = message.to_a[0]
+
+@server.add_method "#{prefix}hue" do | message |
+  @state[:hue] += message.to_a[0].to_i
+  @state[:hue] = 0 if @state[:hue] > 360
+  @state[:hue] = 360 if @state[:hue] < 0 
+  @client.send(OSC::Message.new( "#{prefix}labels/hue" , 'color: ' + @state[:hue].to_i.to_s))
 end
 
-@server.add_method '/galaxies/1/saturation' do | message |
+@server.add_method "#{prefix}saturation" do | message |
   @state[:saturation] = message.to_a[0]
+  @client.send(OSC::Message.new( "#{prefix}labels/saturation" , 'saturation: ' + @state[:saturation].to_i.to_s))
 end
 
-@server.add_method '/galaxies/1/value' do | message |
+@server.add_method "#{prefix}value" do | message |
   @state[:value] = message.to_a[0]
+  @client.send(OSC::Message.new( "#{prefix}labels/value" , 'value: ' + @state[:value].to_i.to_s))
 end
 
-@server.add_method '/galaxies/1/onoff' do | message |
+@server.add_method "#{prefix}onoff" do | message |
   @galaxy.onoff(message.to_a[0].to_i)
 end
 
-@server.add_method '.*' do |message|
-  puts message.inspect
+@server.add_method "#{prefix}touch/[12]" do |message|
+  # x1 (position of the first finger) = light wave center
+  # (y2 - y1)/100 = light wave width, W > 0.8 = 1
+  if message.address.match(/1$/)
+    @galaxy.distance_map.x = message.to_a[0]
+    @galaxy.distance_map.y = message.to_a[1]
+
+  elsif message.address.match(/2$/)
+    w = (message.to_a[1] - @galaxy.distance_map.y).abs/100.0
+    w = 1.0 if w > 0.8
+    #w = @minw if w < @minw
+    @galaxy.distance_map.w = w
+  end
+
+  @state[:distance_map] = [@galaxy.distance_map.x, @galaxy.distance_map.y, @galaxy.distance_map.w].join(':')
+  puts "x:y:w = #{@state[:distance_map]}"
 end
 
+
+@server.add_method "#{prefix}hsv" do |message|
+  [:saturation, :value].each do |p|
+    @client.send(OSC::Message.new( "#{prefix}#{p}" , @state[p]))
+    @client.send(OSC::Message.new( "#{prefix}labels/#{p}" , p.to_s + ': ' + @state[p].to_i.to_s))
+  end
+  @client.send(OSC::Message.new( "#{prefix}labels/hue" , 'color: ' + @state[:hue].to_i.to_s))
+end
+  
+
+  
 puts "Created OSC server, Ctrl-C to quit"
 
 Thread.new do
