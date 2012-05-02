@@ -46,18 +46,18 @@ end
   # x1 (position of the first finger) = light wave center
   # (y2 - y1)/100 = light wave width, W > 0.8 = 1
   if message.address.match(/1$/)
-    @galaxy.distance_map.x = message.to_a[0]
-    @galaxy.distance_map.y = message.to_a[1]
+    @galaxy.distance_map.x = message.to_a[0]/100.0
+    @galaxy.distance_map.y = message.to_a[1]/100.0
 
   elsif message.address.match(/2$/)
-    w = (message.to_a[1] - @galaxy.distance_map.y).abs/100.0
-    w = 1.0 if w > 0.8
+    w = (message.to_a[1]/100.0 - @galaxy.distance_map.y).abs
+    w = 1.0 if w > 1.0
     #w = @minw if w < @minw
     @galaxy.distance_map.w = w
   end
 
   @state[:distance_map] = [@galaxy.distance_map.x, @galaxy.distance_map.y, @galaxy.distance_map.w].join(':')
-  puts "x:y:w = #{@state[:distance_map]}"
+  #puts "x:y:w = #{@state[:distance_map]}"
 end
 
 
@@ -87,6 +87,9 @@ while (true) do
   sleep([0, TIMESTEP - (cur_t - prev_t)].max)
   
   if !prev_state.eql?(@state)
+    #@galaxy.fixtures.each do |f|
+    #  puts "d = #{f.distance}, v = #{@galaxy.distance_map.value_at(f.distance)}"
+    #end
     @galaxy.display_hsv(@state[:hue], @state[:saturation], @state[:value])
     prev_state = @state.dup
   end
