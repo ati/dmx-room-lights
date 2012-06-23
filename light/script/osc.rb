@@ -4,9 +4,13 @@ require 'osc-ruby'
 #RUNFILE = "./tmp/osc_keep_running"
 #File.open(RUNFILE, "w") {}
 TIMESTEP = 40.0/1000 # sec
+SERVER_PORT = 10000
+CLIENT_PORT = 10001
+CLIENT_ADDR = '192.168.1.102'
+UNIVERSE = DmxUniverse.instance
 
-@server = OSC::Server.new( 10000 )
-@client = OSC::Client.new( '192.168.1.106', 10001)
+@server = OSC::Server.new( SERVER_PORT )
+@client = OSC::Client.new( CLIENT_ADDR, CLIENT_PORT )
 prefix = '/galaxies/1/'
 
 @state = {
@@ -71,7 +75,7 @@ end
   
 
   
-puts "Created OSC server, Ctrl-C to quit"
+puts "Created OSC server at port #{SERVER_PORT}, sending info to client #{CLIENT_ADDR}:#{CLIENT_PORT}. Ctrl-C to quit"
 
 Thread.new do
   ActiveRecord::Base.cache do
@@ -87,11 +91,10 @@ while (true) do
   sleep([0, TIMESTEP - (cur_t - prev_t)].max)
   
   if !prev_state.eql?(@state)
-    #@galaxy.fixtures.each do |f|
-    #  puts "d = #{f.distance}, v = #{@galaxy.distance_map.value_at(f.distance)}"
-    #end
+    puts "new state: #{@state.inspect}"
     @galaxy.display_hsv(@state[:hue], @state[:saturation], @state[:value])
     prev_state = @state.dup
+    UNIVERSE.display
   end
 
   prev_t = cur_t
