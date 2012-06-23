@@ -3,7 +3,7 @@ require 'singleton'
 class DmxUniverse
   include Singleton
 
-  DMX_HOST = 'localhost'
+  DMX_HOST = '192.168.1.2'
   DMX_PORT = 37211
 
   def initialize
@@ -17,6 +17,10 @@ class DmxUniverse
     @raw_data[f.start_address - 1] = f.r
     @raw_data[f.start_address] = f.g
     @raw_data[f.start_address + 1] = f.b
+  end
+
+  def dump
+    puts @raw_data.join(' ')
   end
 
   def display

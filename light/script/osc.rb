@@ -1,8 +1,6 @@
 # compatible with ruby 1.8
 require 'osc-ruby'
 
-#RUNFILE = "./tmp/osc_keep_running"
-#File.open(RUNFILE, "w") {}
 TIMESTEP = 40.0/1000 # sec
 SERVER_PORT = 10000
 CLIENT_PORT = 10001
@@ -49,6 +47,7 @@ end
 @server.add_method "#{prefix}touch/[12]" do |message|
   # x1 (position of the first finger) = light wave center
   # (y2 - y1)/100 = light wave width, W > 0.8 = 1
+  # puts "#{Time.now}: #{message.to_a.inspect}"
   if message.address.match(/1$/)
     @galaxy.distance_map.x = message.to_a[0]/100.0
     @galaxy.distance_map.y = message.to_a[1]/100.0
@@ -58,10 +57,10 @@ end
     w = 1.0 if w > 1.0
     #w = @minw if w < @minw
     @galaxy.distance_map.w = w
+    @galaxy.distance_map.x = 0.5
   end
 
   @state[:distance_map] = [@galaxy.distance_map.x, @galaxy.distance_map.y, @galaxy.distance_map.w].join(':')
-  #puts "x:y:w = #{@state[:distance_map]}"
 end
 
 
@@ -75,7 +74,7 @@ end
   
 
   
-puts "Created OSC server at port #{SERVER_PORT}, sending info to client #{CLIENT_ADDR}:#{CLIENT_PORT}. Ctrl-C to quit"
+puts "#{Time.now}: Created OSC server at port #{SERVER_PORT}, sending info to client #{CLIENT_ADDR}:#{CLIENT_PORT}."
 
 Thread.new do
   ActiveRecord::Base.cache do
@@ -86,16 +85,23 @@ end
 prev_t = Time.now.to_f
 prev_state = @state.dup
 
-while (true) do
+@done = false
+trap 'SIGINT', proc { @done = true }
+
+while ( !@done ) do
   cur_t = Time.now.to_f
   sleep([0, TIMESTEP - (cur_t - prev_t)].max)
   
   if !prev_state.eql?(@state)
-    puts "new state: #{@state.inspect}"
+    #puts "#{Time.now}: new state: #{@state.inspect}"
     @galaxy.display_hsv(@state[:hue], @state[:saturation], @state[:value])
     prev_state = @state.dup
+    #UNIVERSE.dump
     UNIVERSE.display
   end
 
   prev_t = cur_t
 end
+
+puts "" # for ^C
+puts "#{Time.now}: bye."
