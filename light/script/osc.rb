@@ -74,6 +74,14 @@ end
 end
   
 
+@server.add_method "/msp/beat" do | message |
+  puts "beat: " + message.to_a[0].to_s
+end
+
+@server.add_method "/msp/pitch" do | message |
+  puts "pitch: " + message.to_a[0].to_s
+end
+
   
 puts "Created OSC server at port #{SERVER_PORT}, sending info to client #{CLIENT_ADDR}:#{CLIENT_PORT}. Ctrl-C to quit"
 
