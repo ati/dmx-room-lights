@@ -4,7 +4,7 @@ require 'osc-ruby'
 TIMESTEP = 40.0/1000 # sec
 SERVER_PORT = 10000
 CLIENT_PORT = 10001
-CLIENT_ADDR = '192.168.1.102'
+CLIENT_ADDR = '192.168.1.100'
 UNIVERSE = DmxUniverse.instance
 
 @server = OSC::Server.new( SERVER_PORT )
