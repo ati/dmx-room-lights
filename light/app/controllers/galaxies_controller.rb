@@ -100,7 +100,7 @@ class GalaxiesController < ApplicationController
         @galaxy.color_groups << ColorGroup.find(params[g].to_i)
       end
     end
-    Galaxy.display()
+    @galaxy.display()
     redirect_to @galaxy, notice: 'Galaxy displayed'
     #render :text => params.inspect
   end
